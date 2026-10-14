@@ -137,17 +137,19 @@ public class Coordinates2Country {
     /**
      * Finds the country under a given pixel.
      */
-    private static String countryFromPixel(int x, int y, boolean wikidataOrNot, Bitmap bitmap)
-    {
+    private static String countryFromPixel(int x, int y, boolean wikidataOrNot, Bitmap bitmap) {
         int grayshade = 0;
-        try {
-            int color = bitmap.getPixel(x, y); // A number that contains all channels.
-            grayshade = Color.blue(color);
-            //System.out.println("Color for x=" + x + " y=" + y + ": " + color + " Color.red:" + Color.red(grayshade));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        int color = 0;
+
+        if (x < bitmap.getWidth() && y < bitmap.getHeight()) {
+			color = bitmap.getPixel(x, y); // A number that contains all channels.
+		}
+		else {
+			System.err.println("countryFromPixel: x ("+ x +") must be < bitmap width (" + bitmap.getWidth() + ") and y (" + y + ") must be < bitmap height (" + bitmap.getHeight() + ")");
+		}
+
+        grayshade = Color.blue(color);
+        //System.out.println("Color for x=" + x + " y=" + y + ": " + color + " Color.red:" + Color.red(grayshade));
         return countryFromGrayshade(grayshade, wikidataOrNot);
     }
 
